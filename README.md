@@ -22,8 +22,8 @@ redesign, just the original `spritesheet.webp` + `pet.json`.
   - `waiting` while an approval request is open (`approval/request`)
 - Drag the pet to move it — it walks left/right in the drag direction.
 - Hover to see the current state; click (no movement) to make it jump.
-- Serves the sprite over HTTP with a base64 data-URI fallback, so it keeps
-  working even if the route is unavailable.
+- The sprite atlas is embedded directly in `src/host.js`, so the plugin is
+  fully self-contained — clone it anywhere and it works with zero config.
 
 ## Layout
 
@@ -40,6 +40,7 @@ Silverhand/
 │   ├── host.js             # DSH host half (asset + state)
 │   └── client.js           # DSH client half (renderer)
 ├── scripts/
+│   ├── embed-sprite.js     # regenerate the embedded atlas in src/host.js
 │   ├── analyze_frames.py   # measure per-row frame counts / diffs
 │   └── contact_sheet.py    # render a labeled contact sheet
 └── docs/
@@ -50,10 +51,10 @@ Silverhand/
 
 A DSH plugin is a Cordis plugin split into two halves:
 
-- **Host** (`src/host.js`) runs in the DSH Node process. It reads the sprite,
-  serves it over HTTP (with a data-URI fallback), and derives the pet state
-  from agent events. It exposes two package-private RPC methods:
-  `getState` and `getSprite`.
+- **Host** (`src/host.js`) runs in the DSH Node process. It embeds the sprite
+  atlas as base64 (no filesystem path), serves it over HTTP (with a data-URI
+  fallback), and derives the pet state from agent events. It exposes two
+  package-private RPC methods: `getState` and `getSprite`.
 - **Client** (`src/client.js`) runs in the browser. It registers into
   `shell.overlay`, renders the sprite, and polls `getState` every 300 ms,
   animating the matching atlas row.
@@ -67,9 +68,8 @@ The quickest way to try it is the DSH dynamic-plugin mechanism. In a DSH
 session, load the two source files and pass their contents as `code.host` /
 `code.client` to `cordis_define`, then `cordis_run`.
 
-> **Before running**, update `SPRITE_PATH` in `src/host.js` to the absolute
-> path where `assets/spritesheet.webp` lives on your machine (it ships set to
-> `D:/DeepSeekHarness/Silverhand/assets/spritesheet.webp`).
+> No setup needed: the sprite is embedded in `src/host.js`, so both halves
+> work straight out of the box on any machine.
 
 ## Persistent install
 
@@ -83,15 +83,17 @@ copy the plugin into a preset composition:
 3. Mount that preset for the sessions that should show the pet.
 
 See the DSH composition docs for the exact `cordis.yml` schema for your
-deployment. The `inject` declarations matter: the host half needs `fs`,
-`webServer`, `agents`; the client half needs `slots`, `timer`.
+deployment. The `inject` declarations matter: the host half needs `webServer`
+and `agents`; the client half needs `slots` and `timer`.
 
 ## Configuration
 
 All tunables are constants at the top of each half:
 
-- `src/host.js` — `SPRITE_PATH`, `ROUTE_PATH`, and the per-state transient
-  durations in the event listeners.
+- `src/host.js` — `ROUTE_PATH` and the per-state transient durations in the
+  event listeners. The sprite is the embedded `SPRITE_B64` block; after
+  replacing `assets/spritesheet.webp`, regenerate it with
+  `node scripts/embed-sprite.js`.
 - `src/client.js` — `ANIMS` (row / frame count / cadence per animation),
   `STATE_ANIM` (state → animation), `PET_W` / `PET_H` (display size), and the
   `CSS` block (position, shadow, hover).
@@ -107,6 +109,9 @@ licensed; the sprite's licensing is yours to state.
 ## Development helpers
 
 ```bash
+# Regenerate the embedded sprite after changing assets/spritesheet.webp
+node scripts/embed-sprite.js
+
 # Report per-row opaque-cell counts and consecutive-frame deltas
 python scripts/analyze_frames.py
 
@@ -114,4 +119,5 @@ python scripts/analyze_frames.py
 python scripts/contact_sheet.py
 ```
 
-Requires Python 3 with `Pillow` and `numpy`.
+`analyze_frames.py` / `contact_sheet.py` require Python 3 with `Pillow` and
+`numpy`.

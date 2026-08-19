@@ -1,0 +1,6 @@
+# Normalize line endings for text files (LF on commit)
+* text=auto
+
+# Binary assets
+*.webp binary
+*.png binary

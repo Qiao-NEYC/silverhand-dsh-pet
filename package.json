@@ -1,0 +1,23 @@
+{
+  "name": "silverhand-dsh-pet",
+  "version": "1.0.0",
+  "description": "Silverhand desktop pet for the DeepSeek Harness Web GUI — reacts to agent state.",
+  "license": "MIT",
+  "type": "module",
+  "files": [
+    "assets",
+    "src",
+    "docs"
+  ],
+  "scripts": {
+    "analyze": "python scripts/analyze_frames.py",
+    "contact-sheet": "python scripts/contact_sheet.py"
+  },
+  "keywords": [
+    "deepseek-harness",
+    "dsh",
+    "cordis",
+    "desktop-pet",
+    "silverhand"
+  ]
+}

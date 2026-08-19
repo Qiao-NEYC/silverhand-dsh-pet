@@ -1,0 +1,15 @@
+# Generated contact sheets (large inspection artifacts)
+scripts/contact_full.png
+scripts/contact_rows.png
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Node
+node_modules/
+
+# OS / editor
+.DS_Store
+Thumbs.db

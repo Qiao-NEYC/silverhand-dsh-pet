@@ -1,5 +1,13 @@
 # Silverhand — DSH Desktop Pet
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+![DeepSeek Harness](https://img.shields.io/badge/DeepSeek%20Harness-plugin-4D6BFE)
+![Cordis](https://img.shields.io/badge/Cordis-plugin-7C3AED)
+
+<div align="center">
+  <img src="docs/demo.gif" alt="Silverhand desktop pet demo" width="384">
+</div>
+
 A desktop pet for the **DeepSeek Harness** Web GUI. Silverhand (a cyberpunk
 mercenary with a silver cybernetic arm) lives in the bottom-right corner and
 reacts to what the agent is doing — idle breathing, active work, reviewing
@@ -41,9 +49,11 @@ Silverhand/
 │   └── client.js           # DSH client half (renderer)
 ├── scripts/
 │   ├── embed-sprite.js     # regenerate the embedded atlas in src/host.js
+│   ├── make_demo_gif.py    # render docs/demo.gif (animated demo)
 │   ├── analyze_frames.py   # measure per-row frame counts / diffs
 │   └── contact_sheet.py    # render a labeled contact sheet
 └── docs/
+    ├── demo.gif            # animated demo (all animations)
     └── sprite-atlas.md     # atlas layout + state mapping
 ```
 
@@ -111,6 +121,9 @@ licensed; the sprite's licensing is yours to state.
 ```bash
 # Regenerate the embedded sprite after changing assets/spritesheet.webp
 node scripts/embed-sprite.js
+
+# Regenerate docs/demo.gif
+python scripts/make_demo_gif.py
 
 # Report per-row opaque-cell counts and consecutive-frame deltas
 python scripts/analyze_frames.py

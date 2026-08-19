@@ -11,6 +11,7 @@
   ],
   "scripts": {
     "embed": "node scripts/embed-sprite.js",
+    "demo": "python scripts/make_demo_gif.py",
     "analyze": "python scripts/analyze_frames.py",
     "contact-sheet": "python scripts/contact_sheet.py"
   },

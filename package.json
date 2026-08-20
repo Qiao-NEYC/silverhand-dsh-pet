@@ -1,25 +1,48 @@
 {
   "name": "silverhand-dsh-pet",
   "version": "1.0.0",
-  "description": "Silverhand desktop pet for the DeepSeek Harness Web GUI — reacts to agent state.",
+  "description": "Silverhand desktop pet for the DeepSeek Harness Web GUI — drag to move, walks in the drag direction, reacts to agent state.",
   "license": "MIT",
+  "type": "module",
+  "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./client": "./lib/client.js",
+    "./package.json": "./package.json"
+  },
   "files": [
+    "lib",
     "assets",
-    "src",
+    "docs",
     "scripts",
-    "docs"
+    "README.md"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Qiao-NEYC/silverhand-dsh-pet.git"
+  },
+  "homepage": "https://github.com/Qiao-NEYC/silverhand-dsh-pet",
   "scripts": {
-    "embed": "node scripts/embed-sprite.js",
     "demo": "python scripts/make_demo_gif.py",
     "analyze": "python scripts/analyze_frames.py",
     "contact-sheet": "python scripts/contact_sheet.py"
   },
   "keywords": [
+    "deepseek",
     "deepseek-harness",
     "dsh",
+    "dsh-plugin",
     "cordis",
     "desktop-pet",
     "silverhand"
-  ]
+  ],
+  "dsh": {
+    "client": {
+      "platform": "web",
+      "inject": [
+        "@deepseek-ai/dsh-client-connection",
+        "@deepseek-ai/dsh-client-runtime"
+      ]
+    }
+  }
 }

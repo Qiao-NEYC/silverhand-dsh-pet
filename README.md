@@ -113,6 +113,22 @@ All tunables are constants at the top of each half:
   `STATE_ANIM` (state → animation), `PET_W` / `PET_H` (display size), and the
   `CSS` block (position, shadow, hover).
 
+## Troubleshooting blank or missing pet artwork
+
+- Use package version `1.0.1` or newer. The client bundle now declares the
+  layout dependency explicitly, so `shell.overlay` is available before the pet
+  registers.
+- The client probes `/silverhand-pet/spritesheet.webp` and logs a route error in
+  the browser console if the Host half is not serving the atlas. A `404` or
+  `500` means the host package is not active; reinstall the bundle and restart
+  DSH.
+- Animation frames are reset whenever the state changes. This prevents a stale
+  frame index from selecting an empty atlas cell when switching back to the
+  six-frame `idle` or `waiting` rows.
+- If the pet container exists but is transparent, inspect the browser Network
+  panel for the sprite route and confirm its response is `image/webp` with a
+  payload around 1 MB.
+
 ## Asset provenance
 
 The artwork was migrated from the local Codex pet directory

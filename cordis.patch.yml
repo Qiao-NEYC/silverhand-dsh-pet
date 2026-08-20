@@ -1,0 +1,6 @@
+# Silverhand desktop pet — dsh bundle patch layer.
+# Mounts the host + client halves as a profile bundle entry. The package must
+# also be listed in the profile's dsh.profile.bundles; requires a DSH restart.
+- insert:
+    - id: silverhand
+      name: 'silverhand-dsh-pet'
